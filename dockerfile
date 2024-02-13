@@ -1,9 +1,23 @@
+# Use the official Python image as a base image
 FROM python:latest
 
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Install dependencies
+COPY requirements.txt /app/
+RUN sudo apt install libgdal-dev gdal-bin
 RUN pip install -r requirements.txt
 
-WORKDIR /home/aprilia_gicait/MachineLearningGIS/quake
+# Copy the project code into the container
+COPY . /app/
 
-COPY manage.py ./
+# Expose the port that the Django app runs on
+EXPOSE 8000
 
-CMD ["python", "./manage.py"]
+# Run the Django development server
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

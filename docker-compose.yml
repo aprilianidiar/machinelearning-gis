@@ -3,6 +3,16 @@ networks:
   quake-net:
 
 services:
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - 8000:8000
+    volumes:
+      - .:/app
+    depends_on:
+      - database
+
   database: 
     container_name: postgres
     image: postgres:latest
